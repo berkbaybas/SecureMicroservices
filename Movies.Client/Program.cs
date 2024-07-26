@@ -1,7 +1,50 @@
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
+using Movies.Client.ApiServices;
+using IdentityModel;
+using Microsoft.Net.Http.Headers;
+using Movies.Client.HttpHandlers;
+using IdentityModel.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IMovieApiService, MovieApiService>();
+
+// http operations start
+
+// 1 create an HttpClient used for accessing the Movies.API
+builder.Services.AddTransient<AuthenticationDelegatingHandler>();
+
+builder.Services.AddHttpClient("MovieAPIClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5001/");
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+}).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
+
+// 2 create an HttpClient used for accessing the IDP
+builder.Services.AddHttpClient("IDPClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5005/");
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+});
+
+builder.Services.AddSingleton(new ClientCredentialsTokenRequest
+{
+    Address = "https://localhost:5005/connect/token",
+    ClientId = "movieClient",
+    ClientSecret = "secret",
+    Scope = "movieAPI"
+});
+
+// http operations end
 
 var app = builder.Build();
 
@@ -17,8 +60,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
