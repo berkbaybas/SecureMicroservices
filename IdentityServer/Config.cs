@@ -12,7 +12,7 @@ namespace IdentityServer
     {
         public static IEnumerable<Client> Clients =>
         [
-            new Client
+            new Client // Client for Postman
             {
                 ClientId = "movieClient",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
@@ -22,7 +22,7 @@ namespace IdentityServer
                 },
                 AllowedScopes = { "movieAPI" }
             },
-            new Client
+            new Client // Client for mvc app
             {
                 ClientId = "movies_mvc_client",
                 ClientName = "Movies MVC Web App",

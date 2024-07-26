@@ -15,6 +15,33 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IMovieApiService, MovieApiService>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+{
+    options.Authority = "https://localhost:5005";
+
+    options.ClientId = "movies_mvc_client";
+    options.ClientSecret = "secret";
+    options.ResponseType = "code";
+
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.Scope.Add("movieAPI");
+
+    options.SaveTokens = true;
+    options.GetClaimsFromUserInfoEndpoint = true;
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = JwtClaimTypes.GivenName,
+    };
+});
+
 // http operations start
 
 // 1 create an HttpClient used for accessing the Movies.API
@@ -36,13 +63,15 @@ builder.Services.AddHttpClient("IDPClient", client =>
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 });
 
-builder.Services.AddSingleton(new ClientCredentialsTokenRequest
-{
-    Address = "https://localhost:5005/connect/token",
-    ClientId = "movieClient",
-    ClientSecret = "secret",
-    Scope = "movieAPI"
-});
+//builder.Services.AddSingleton(new ClientCredentialsTokenRequest
+//{
+//    Address = "https://localhost:5005/connect/token",
+//    ClientId = "movieClient",
+//    ClientSecret = "secret",
+//    Scope = "movieAPI"
+//});
+
+builder.Services.AddHttpContextAccessor();
 
 // http operations end
 
@@ -60,6 +89,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
