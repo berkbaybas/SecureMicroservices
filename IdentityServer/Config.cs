@@ -32,19 +32,22 @@ namespace IdentityServer
             {
                 ClientId = Common.Constants.MoviesMcvClient,
                 ClientName = "Movies MVC Web App",
-                AllowedGrantTypes = GrantTypes.Code,
-                //code flow which allows to provide to get token when login with the user credentials.
+                AllowedGrantTypes = GrantTypes.Hybrid,
+                RequirePkce = false,
+
+                //AllowedGrantTypes = GrantTypes.Code,
+                //Code flow which allows to provide to get token when login with the user credentials.
                 //we will provide the login information, username and password.
                 //and after that we get the token with a login and login system.
-                RequirePkce = false,
+                
                 AllowRememberConsent = false,
                 RedirectUris = new List<string>()
                 {
-                    $"{Common.Constants.IdentityServerUrl}/signin-oidc"
+                    $"{Common.Constants.MoviesMcvClientUrl}/signin-oidc"
                 },
                 PostLogoutRedirectUris = new List<string>()
                 {
-                    $"{Common.Constants.IdentityServerUrl}/signout-callback-oidc"
+                    $"{Common.Constants.MoviesMcvClientUrl}/signout-callback-oidc"
                 },
                 ClientSecrets = new List<Secret>
                 {

@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(options =>
 
     options.ClientId = Common.Constants.MoviesMcvClient;
     options.ClientSecret = Common.Constants.SecretKey;
-    options.ResponseType = "code";
+    options.ResponseType = "code id_token";// added id_token for hybrid flow
 
     options.Scope.Add("openid");
     options.Scope.Add("profile");
@@ -50,7 +50,7 @@ builder.Services.AddTransient<AuthenticationDelegatingHandler>();
 
 builder.Services.AddHttpClient("MovieAPIClient", client =>
 {
-    client.BaseAddress = new Uri(Common.Constants.IdentityServerUrl);
+    client.BaseAddress = new Uri(Common.Constants.MoviesApiUrl);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 }).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
@@ -66,10 +66,10 @@ builder.Services.AddHttpClient("MovieAPIClient", client =>
 
 //builder.Services.AddSingleton(new ClientCredentialsTokenRequest
 //{
-//    Address = "https://localhost:5005/connect/token",
-//    ClientId = "movieClient",
-//    ClientSecret = "secret",
-//    Scope = "movieAPI"
+//    Address = $"{Common.Constants.IdentityServerUrl}/connect/token",
+//    ClientId = Common.Constants.MoviesClient,
+//    ClientSecret = Common.Constants.SecretKey,
+//    Scope = Common.Constants.MoviesApiScope
 //});
 
 builder.Services.AddHttpContextAccessor();
