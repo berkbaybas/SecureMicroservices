@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Client", "Movies.Client\Movies.Client.csproj", "{7B517373-0287-4E88-81D6-35D30A597BC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomJwtServer", "CustomJwtServer\CustomJwtServer.csproj", "{C0AF68C2-1120-424F-820B-114934E77E05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomJwtServer", "CustomJwtServer\CustomJwtServer.csproj", "{C0AF68C2-1120-424F-820B-114934E77E05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{AC0DF828-064F-4B8E-A02E-3F9785E79F58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C0AF68C2-1120-424F-820B-114934E77E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0AF68C2-1120-424F-820B-114934E77E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0AF68C2-1120-424F-820B-114934E77E05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

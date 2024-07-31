@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Movies.API.Data;
+using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Text;
 
@@ -18,7 +19,7 @@ builder.Services.AddDbContext<MoviesAPIContext>(options =>
 builder.Services.AddAuthentication("Bearer")
 .AddJwtBearer("Bearer", options => // JWT TOKEN FROM IDENTITY SERVER
 {
-    options.Authority = "https://localhost:5005";
+    options.Authority = Common.Constants.IdentityServerUrl;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateAudience = false
@@ -32,16 +33,16 @@ builder.Services.AddAuthentication("Bearer")
 //        ValidateAudience = true,
 //        ValidateLifetime = true,
 //        ValidateIssuerSigningKey = true,
-//        ValidIssuer = "https://localhost:5003",
-//        ValidAudience = "https://localhost:5001",
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_generated_base64_key_here_123"))
-
+//        ValidIssuer = Common.Constants.CustomJwtServerUrl,
+//        ValidAudience = Common.Constants.MoviesApiUrl,
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Common.Constants.SecretKey))
 //    };
 //});
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "movieClient", "movies_mvc_client", "CustomMovieClient"));
+    options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", 
+        Common.Constants.MoviesClient, Common.Constants.MoviesMcvClient, Common.Constants.MoviesCustomClient));
 });
 
 var app = builder.Build();

@@ -7,6 +7,7 @@ using IdentityModel;
 using Microsoft.Net.Http.Headers;
 using Movies.Client.HttpHandlers;
 using IdentityModel.Client;
+using System.Security.AccessControl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,15 +24,15 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
-    options.Authority = "https://localhost:5005";
+    options.Authority = Common.Constants.IdentityServerUrl;
 
-    options.ClientId = "movies_mvc_client";
-    options.ClientSecret = "secret";
+    options.ClientId = Common.Constants.MoviesMcvClient;
+    options.ClientSecret = Common.Constants.SecretKey;
     options.ResponseType = "code";
 
     options.Scope.Add("openid");
     options.Scope.Add("profile");
-    options.Scope.Add("movieAPI");
+    options.Scope.Add(Common.Constants.MoviesApiScope);
 
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
@@ -49,19 +50,19 @@ builder.Services.AddTransient<AuthenticationDelegatingHandler>();
 
 builder.Services.AddHttpClient("MovieAPIClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5001/");
+    client.BaseAddress = new Uri(Common.Constants.IdentityServerUrl);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 }).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
 
 // 2 create an HttpClient used for accessing the IDP
-builder.Services.AddHttpClient("IDPClient", client =>
-{
-    client.BaseAddress = new Uri("https://localhost:5005/");
-    client.DefaultRequestHeaders.Clear();
-    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-});
+//builder.Services.AddHttpClient("IDPClient", client =>
+//{
+//    client.BaseAddress = new Uri("https://localhost:5005/");
+//    client.DefaultRequestHeaders.Clear();
+//    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+//});
 
 //builder.Services.AddSingleton(new ClientCredentialsTokenRequest
 //{

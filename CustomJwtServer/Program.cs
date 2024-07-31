@@ -9,14 +9,14 @@ var app = builder.Build();
 
 app.MapGet("/GenerateToken", () =>
 {
-    var SecretKey = "your_generated_base64_key_here_123";
-    var Issuer = "https://localhost:5003";
-    var Audience = "https://localhost:5001";
+    var SecretKey = Common.Constants.SecretKey;
+    var Issuer = Common.Constants.CustomJwtServerUrl;
+    var Audience = Common.Constants.MoviesApiUrl;
 
     var claims = new[]
     {
         new Claim(ClaimTypes.GivenName, "berk"),
-        new Claim("client_id", "CustomMovieClient") // Add client_id claim
+        new Claim("client_id", Common.Constants.MoviesClient) // Add client_id claim
     };
 
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
