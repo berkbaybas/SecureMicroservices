@@ -16,10 +16,12 @@ namespace Movies.Client.ApiServices
     public class MovieApiService : IMovieApiService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MovieApiService(IHttpClientFactory httpClientFactory)
+        public MovieApiService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<Movie>> GetMovies()
@@ -62,8 +64,8 @@ namespace Movies.Client.ApiServices
             //var client = new HttpClient();
 
             //// just checks if we can reach the Discovery document. Not 100% needed but..
-            //var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5005");
-            //if (disco.IsError)
+            //var metaDataResponse = await client.GetDiscoveryDocumentAsync("https://localhost:5005");
+            //if (metaDataResponse.IsError)
             //{
             //    return null; // throw 500 error
             //}
@@ -113,40 +115,40 @@ namespace Movies.Client.ApiServices
             throw new NotImplementedException();
         }
 
-        //public async Task<UserInfoViewModel> GetUserInfo()
-        //{
-        //    var idpClient = _httpClientFactory.CreateClient("IDPClient");
+        public async Task<UserInfoViewModel> GetUserInfo()
+        {
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
 
-        //    var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
+            var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
 
-        //    if (metaDataResponse.IsError)
-        //    {
-        //        throw new HttpRequestException("Something went wrong while requesting the access token");
-        //    }
+            if (metaDataResponse.IsError)
+            {
+                throw new HttpRequestException("Something went wrong while requesting the access token");
+            }
 
-        //    var accessToken = await _httpContextAccessor
-        //        .HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            var accessToken = await _httpContextAccessor
+                .HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
-        //    var userInfoResponse = await idpClient.GetUserInfoAsync(
-        //       new UserInfoRequest
-        //       {
-        //           Address = metaDataResponse.UserInfoEndpoint,
-        //           Token = accessToken
-        //       });
+            var userInfoResponse = await idpClient.GetUserInfoAsync(
+               new UserInfoRequest
+               {
+                   Address = metaDataResponse.UserInfoEndpoint,
+                   Token = accessToken
+               });
 
-        //    if (userInfoResponse.IsError)
-        //    {
-        //        throw new HttpRequestException("Something went wrong while getting user info");
-        //    }
+            if (userInfoResponse.IsError)
+            {
+                throw new HttpRequestException("Something went wrong while getting user info");
+            }
 
-        //    var userInfoDictionary = new Dictionary<string, string>();
+            var userInfoDictionary = new Dictionary<string, string>();
 
-        //    foreach (var claim in userInfoResponse.Claims)
-        //    {
-        //        userInfoDictionary.Add(claim.Type, claim.Value);
-        //    }
+            foreach (var claim in userInfoResponse.Claims)
+            {
+                userInfoDictionary.Add(claim.Type, claim.Value);
+            }
 
-        //    return new UserInfoViewModel(userInfoDictionary);
-        //}
+            return new UserInfoViewModel(userInfoDictionary);
+        }
     }
 }

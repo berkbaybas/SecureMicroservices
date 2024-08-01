@@ -41,5 +41,10 @@ namespace Movies.Client.ApiServices
         {
             throw new NotImplementedException();
         }
+
+        public Task<UserInfoViewModel> GetUserInfo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

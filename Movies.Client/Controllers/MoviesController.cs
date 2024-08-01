@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Movies.Client.ApiServices;
 using Movies.Client.Models;
 
@@ -27,7 +28,7 @@ namespace Movies.Client.Controllers
             return View(await _movieApiService.GetMovies());
         }
 
-        public async Task LogTokenAndClaims()
+        private async Task LogTokenAndClaims()
         {
             var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
 
@@ -39,12 +40,12 @@ namespace Movies.Client.Controllers
             }
         }
 
-        //[Authorize(Roles = "admin")]
-        //public async Task<IActionResult> OnlyAdmin()
-        //{
-        //    var userInfo = await _movieApiService.GetUserInfo();
-        //    return View(userInfo);
-        //}
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> OnlyAdmin()
+        {
+            var userInfo = await _movieApiService.GetUserInfo();
+            return View(userInfo);
+        }
 
 
         // GET: Movies/Details/5

@@ -9,7 +9,7 @@ builder.Services.AddIdentityServer()
                 .AddInMemoryClients(Config.Clients)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                  .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddTestUsers(Config.TestUsers)
+                .AddTestUsers(TestUsers.Users) // from IdentityServer quickstart
                 .AddDeveloperSigningCredential();
 
 var app = builder.Build();

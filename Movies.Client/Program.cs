@@ -30,16 +30,22 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = Common.Constants.SecretKey;
     options.ResponseType = "code id_token";// added id_token for hybrid flow
 
-    options.Scope.Add("openid");
-    options.Scope.Add("profile");
+    //options.Scope.Add("openid"); auto added from openid 
+    //options.Scope.Add("profile"); auto added from openid 
+    options.Scope.Add("address");
+    options.Scope.Add("email");
     options.Scope.Add(Common.Constants.MoviesApiScope);
+    options.Scope.Add("roles");
 
+    options.ClaimActions.MapUniqueJsonKey("role", "role");
+    
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
         NameClaimType = JwtClaimTypes.GivenName,
+        RoleClaimType = JwtClaimTypes.Role,
     };
 });
 
@@ -57,12 +63,12 @@ builder.Services.AddHttpClient("MovieAPIClient", client =>
 
 
 // 2 create an HttpClient used for accessing the IDP
-//builder.Services.AddHttpClient("IDPClient", client =>
-//{
-//    client.BaseAddress = new Uri("https://localhost:5005/");
-//    client.DefaultRequestHeaders.Clear();
-//    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-//});
+builder.Services.AddHttpClient("IDPClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5005/");
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+});
 
 //builder.Services.AddSingleton(new ClientCredentialsTokenRequest
 //{
