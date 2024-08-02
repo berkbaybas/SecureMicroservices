@@ -13,5 +13,6 @@
         public const string MoviesMcvClientUrl = "https://localhost:5002";
         public const string CustomJwtServerUrl = "https://localhost:5003";
         public const string IdentityServerUrl = "https://localhost:5005";
+        public const string ApiGatewayUrl = "https://localhost:5010";
     }
 }

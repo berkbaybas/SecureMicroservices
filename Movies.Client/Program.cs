@@ -56,7 +56,7 @@ builder.Services.AddTransient<AuthenticationDelegatingHandler>();
 
 builder.Services.AddHttpClient("MovieAPIClient", client =>
 {
-    client.BaseAddress = new Uri(Common.Constants.MoviesApiUrl);
+    client.BaseAddress = new Uri(Common.Constants.ApiGatewayUrl);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 }).AddHttpMessageHandler<AuthenticationDelegatingHandler>();
@@ -65,7 +65,7 @@ builder.Services.AddHttpClient("MovieAPIClient", client =>
 // 2 create an HttpClient used for accessing the IDP
 builder.Services.AddHttpClient("IDPClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5005/");
+    client.BaseAddress = new Uri(Common.Constants.IdentityServerUrl);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 });

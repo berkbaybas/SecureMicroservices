@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies.Client", "Movies.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomJwtServer", "CustomJwtServer\CustomJwtServer.csproj", "{C0AF68C2-1120-424F-820B-114934E77E05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{AC0DF828-064F-4B8E-A02E-3F9785E79F58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{AC0DF828-064F-4B8E-A02E-3F9785E79F58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{310E8B1A-6371-4DCB-BE86-85AC30F49C60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC0DF828-064F-4B8E-A02E-3F9785E79F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{310E8B1A-6371-4DCB-BE86-85AC30F49C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{310E8B1A-6371-4DCB-BE86-85AC30F49C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{310E8B1A-6371-4DCB-BE86-85AC30F49C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{310E8B1A-6371-4DCB-BE86-85AC30F49C60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
